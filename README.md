@@ -8,3 +8,7 @@
 6. [回溯](algorithm/backtrace.md)
 7. [深度优先搜索](algorithm/breadth_first_search.md)
 8. [动态规划](algorithm/dynamic_programming.md)
+
+# go
+
+1. [goroutine 数量控制](go/goroutine_num.md)
