@@ -1,11 +1,13 @@
-# 不控制 goroutine 数量引发的问题
+# goroutine 数量控制
+
+## 不控制 goroutine 数量引发的问题
 
 - cpu 和 memory 飙升
 - 主进程崩溃
 
-# 控制 goroutine 数量的方法
+## 控制 goroutine 数量的方法
 
-## buffer channel
+### buffer channel
 
 ```go
 package main
@@ -35,7 +37,7 @@ func deal(i int) {
 
 如果 for 循环次数太少，会导致在当主协程结束时，子协程也是会被终止掉来不及把值输出。
 
-## channel 和 sync 组合
+### channel 和 sync 组合
 
 ```go
 package main
@@ -67,7 +69,7 @@ func deal(i int) {
 
 ```
 
-## 发送和接收分离
+### 发送和接收分离
 
 ```go
 package main

@@ -1,5 +1,10 @@
-# [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+# 滑动窗口
+
+## [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
 ```go
+package main
+
 func lengthOfLongestSubstring(s string) int {
 	// 返回值
 	res := 0
@@ -25,127 +30,143 @@ func lengthOfLongestSubstring(s string) int {
 	// 返回结果
 	return res
 }
+
 ```
-# [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
+## [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
 ```go
+package main
+
 func minWindow(s string, t string) string {
-    // 初始化返回结果
-    res := ""
+	// 初始化返回结果
+	res := ""
 
-    // 格式化要查找的字符串
-    need := make(map[byte]int, 0)
-    for i:=0; i<len(t);i++{
-        need[t[i]]++
-    }
+	// 格式化要查找的字符串
+	need := make(map[byte]int, 0)
+	for i := 0; i < len(t); i++ {
+		need[t[i]]++
+	}
 
-    // 初始化滑动窗口和查到的目标字符串计数值
-    count := 0
-    window := make(map[byte]int, 0)
+	// 初始化滑动窗口和查到的目标字符串计数值
+	count := 0
+	window := make(map[byte]int, 0)
 
-    // 依次遍历所有字符串
-    for slow, fast := 0, 0; fast < len(s); fast++ {
-        // 窗口值累加
-        window[s[fast]]++
+	// 依次遍历所有字符串
+	for slow, fast := 0, 0; fast < len(s); fast++ {
+		// 窗口值累加
+		window[s[fast]]++
 
-        // 窗口值小于等于目标值时，计数目标字符串长度值才累加
-        if window[s[fast]] <= need[s[fast]] {
-            count++
-        }
+		// 窗口值小于等于目标值时，计数目标字符串长度值才累加
+		if window[s[fast]] <= need[s[fast]] {
+			count++
+		}
 
-        // 除去左边无用的字符串，缩小窗口大小
-        for slow <= fast && window[s[slow]] > need[s[slow]] {
-            window[s[slow]]--
-            slow++
-        }
+		// 除去左边无用的字符串，缩小窗口大小
+		for slow <= fast && window[s[slow]] > need[s[slow]] {
+			window[s[slow]]--
+			slow++
+		}
 
-        // 窗口字符串包含目标字符串，计算最小字符串并赋值
-        if count == len(t){
-            if res == "" || fast-slow+1 < len(res) {
-                res = s[slow:fast+1]
-            }
-        }
-    }
+		// 窗口字符串包含目标字符串，计算最小字符串并赋值
+		if count == len(t) {
+			if res == "" || fast-slow+1 < len(res) {
+				res = s[slow : fast+1]
+			}
+		}
+	}
 
-    // 返回结果
-    return res
+	// 返回结果
+	return res
 }
+
 ```
-# [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/)
+
+## [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/)
+
 ```go
+package main
+
 func findAnagrams(s string, p string) []int {
-    res := make([]int, 0)
-    // 格式化需要查找的字符串
-    need := make(map[byte]int, 0)
-    for i:=0; i<len(p); i++ {
-        need[p[i]]++
-    }
+	res := make([]int, 0)
+	// 格式化需要查找的字符串
+	need := make(map[byte]int, 0)
+	for i := 0; i < len(p); i++ {
+		need[p[i]]++
+	}
 
-    // 初始化窗口和找到的字符串
-    count := 0
-    window := make(map[byte]int, 0)
+	// 初始化窗口和找到的字符串
+	count := 0
+	window := make(map[byte]int, 0)
 
-    // 依次遍历所有字符串
-    for slow,fast := 0, 0; fast < len(s); fast++ {
-        // 窗口值增加
-        window[s[fast]]++
+	// 依次遍历所有字符串
+	for slow, fast := 0, 0; fast < len(s); fast++ {
+		// 窗口值增加
+		window[s[fast]]++
 
-        // 窗口值小于等于目标值时，计数目标字符串长度值才累加
-        if window[s[fast]] <= need[s[fast]] {
-            count++
-        }
+		// 窗口值小于等于目标值时，计数目标字符串长度值才累加
+		if window[s[fast]] <= need[s[fast]] {
+			count++
+		}
 
-        // 除去左边无用的字符串，缩小窗口大小
-        for slow <= fast && window[s[slow]] > need[s[slow]] {
-            window[s[slow]]--
-            slow++
-        }
+		// 除去左边无用的字符串，缩小窗口大小
+		for slow <= fast && window[s[slow]] > need[s[slow]] {
+			window[s[slow]]--
+			slow++
+		}
 
-        // 窗口包含目标字符串和大小等于目标字符串, 加入到结果集中
-        if count == len(p) && fast-slow + 1 == len(p) {
-            res = append(res, slow)
-        }
-    }
+		// 窗口包含目标字符串和大小等于目标字符串, 加入到结果集中
+		if count == len(p) && fast-slow+1 == len(p) {
+			res = append(res, slow)
+		}
+	}
 
-    // 返回结果
-    return res
+	// 返回结果
+	return res
 }
+
 ```
-# [567. 字符串的排列](https://leetcode.cn/problems/permutation-in-string/)
+
+## [567. 字符串的排列](https://leetcode.cn/problems/permutation-in-string/)
+
 ```go
+package main
+
 func checkInclusion(s1 string, s2 string) bool {
-    // 格式化需要查找的字符串
-    need := make(map[byte]int, 0)
-    for i:=0; i<len(s1); i++ {
-        need[s1[i]]++
-    }
+	// 格式化需要查找的字符串
+	need := make(map[byte]int, 0)
+	for i := 0; i < len(s1); i++ {
+		need[s1[i]]++
+	}
 
-    // 初始化窗口和找到的字符串
-    count := 0
-    window := make(map[byte]int, 0)
+	// 初始化窗口和找到的字符串
+	count := 0
+	window := make(map[byte]int, 0)
 
-    // 依次遍历所有字符串
-    for slow,fast := 0, 0; fast < len(s2); fast++ {
-        // 窗口值增加
-        window[s2[fast]]++
+	// 依次遍历所有字符串
+	for slow, fast := 0, 0; fast < len(s2); fast++ {
+		// 窗口值增加
+		window[s2[fast]]++
 
-        // 窗口值小于等于目标值时，计数目标字符串长度值才累加
-        if window[s2[fast]] <= need[s2[fast]] {
-            count++
-        }
+		// 窗口值小于等于目标值时，计数目标字符串长度值才累加
+		if window[s2[fast]] <= need[s2[fast]] {
+			count++
+		}
 
-        // 除去左边无用的字符串，缩小窗口大小
-        for slow <= fast && window[s2[slow]] > need[s2[slow]] {
-            window[s2[slow]]--
-            slow++
-        }
+		// 除去左边无用的字符串，缩小窗口大小
+		for slow <= fast && window[s2[slow]] > need[s2[slow]] {
+			window[s2[slow]]--
+			slow++
+		}
 
-        // 窗口包含目标字符串和大小等于目标字符串，返回结果
-        if count == len(s1) && fast-slow + 1 == len(s1) {
-            return true
-        }
-    }
+		// 窗口包含目标字符串和大小等于目标字符串，返回结果
+		if count == len(s1) && fast-slow+1 == len(s1) {
+			return true
+		}
+	}
 
-    // 返回结果
-    return false
+	// 返回结果
+	return false
 }
+
 ```

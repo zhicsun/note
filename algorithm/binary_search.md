@@ -1,5 +1,10 @@
-# [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
+# 二分查找
+
+## [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
+
 ```go
+package main
+
 func searchRange(nums []int, target int) []int {
 	if len(nums) == 0 {
 		return []int{-1, -1}
@@ -40,25 +45,30 @@ func searchRange(nums []int, target int) []int {
 }
 
 ```
-# [704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
+
+## [704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
+
 ```go
+package main
+
 func search(nums []int, target int) int {
-    l := 0
-    r := len(nums) - 1
+	l := 0
+	r := len(nums) - 1
 
-    for l < r {
-        m := (l + r) >> 1
-        if target <= nums[m]{
-            r = m
-        } else {
-            l = m + 1
-        }
-    }
+	for l < r {
+		m := (l + r) >> 1
+		if target <= nums[m] {
+			r = m
+		} else {
+			l = m + 1
+		}
+	}
 
-    if nums[l] != target {
-        return -1
-    }
+	if nums[l] != target {
+		return -1
+	}
 
-    return l
+	return l
 }
+
 ```
