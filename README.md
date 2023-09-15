@@ -12,3 +12,11 @@
 # go
 
 1. [goroutine 数量控制](go/goroutine_num.md)
+
+# shell
+
+1. [常用 shell](shell/use.md)
+
+# tron
+
+1. [搭建](blockchain/tron.md)
