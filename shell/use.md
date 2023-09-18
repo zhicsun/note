@@ -14,6 +14,20 @@ done
 ufw status
 ```
 
+## 删除白名单
+
+```shell
+#!/bin/bash
+ips=(ip1 ip2)
+
+for v in ${ips[@]}
+do
+ ufw delete allow from $v to any port 端口号
+done
+
+ufw status
+```
+
 ## 输出所有客户端 ip
 
 ```shell
