@@ -13,6 +13,7 @@
 # go
 
 1. [goroutine 数量控制](go/goroutine_num.md)
+2. [相关包](go/package.md)
 
 # shell
 
