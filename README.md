@@ -21,4 +21,5 @@
 
 # tron
 
-1. [搭建](blockchain/tron.md)
+1. [搭建](blockchain/node.md)
+2. [智能合约](blockchain/contract.md)
