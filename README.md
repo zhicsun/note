@@ -17,7 +17,7 @@
 
 # shell
 
-1. [常用 shell](shell/use.md)
+1. [常用](shell/use.md)
 
 # tron
 

@@ -18,6 +18,8 @@
 - [热重启](https://github.com/cosmtrek/air)
 - [协程池](https://github.com/panjf2000/ants)
 - [类型转换](https://github.com/spf13/cast)
+- [规则引擎](https://github.com/bilibili/gengine)
+- [合并请求](https://www.liwenzhou.com/posts/Go/singleflight/)
 - [手机号验证](https://github.com/nyaruka/phonenumbers)
 - [配制文件解析](https://github.com/spf13/viper)
 - [移动和桌面端](https://github.com/fyne-io/fyne)
