@@ -13,11 +13,11 @@
 # go
 
 1. [goroutine 数量控制](go/goroutine_num.md)
-2. [相关包](go/package.md)
+2. [常用包](go/package.md)
 
 # shell
 
-1. [常用](shell/use.md)
+1. [常用命令](shell/use.md)
 
 # tron
 
