@@ -12,8 +12,9 @@
 
 # go
 
-1. [goroutine 数量控制](go/goroutine_num.md)
-2. [常用包](go/package.md)
+1. [goroutine 数量控制](go/goroutine_limit.md)
+2. [动态保活工作池](go/work_poll.md)
+3. [常用包](go/package.md)
 
 # shell
 
