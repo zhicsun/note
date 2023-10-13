@@ -14,12 +14,13 @@ import (
 
 func main() {
 	var wg sync.WaitGroup
-	buffer := make(chan struct{}, 10)
+	goroutineCount := 10
+	goroutineCountBuffer := make(chan struct{}, goroutineCount)
 	count := math.MaxInt64
 	for i := 0; i < count; i++ {
 		wg.Add(1)
-		buffer <- struct{}{}
-		go deal(&wg, buffer, i)
+		goroutineCountBuffer <- struct{}{}
+		go deal(&wg, goroutineCountBuffer, i)
 	}
 	wg.Wait()
 }
