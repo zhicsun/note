@@ -1,5 +1,7 @@
 # 控制 goroutine 数量的方法
+
 ## channel 和 sync 组合
+
 ```go
 package main
 
@@ -23,13 +25,17 @@ func main() {
 }
 
 func deal(wg *sync.WaitGroup, buffer <-chan struct{}, i int) {
-	defer wg.Done()
+	defer func() {
+		wg.Done()
+		<-buffer
+	}()
 	fmt.Println(i, runtime.NumGoroutine())
-	<-buffer
 }
 
 ```
-##  发送和接收分离
+
+## 发送和接收分离
+
 ```go
 package main
 

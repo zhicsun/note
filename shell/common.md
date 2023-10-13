@@ -14,6 +14,11 @@ done
 ufw status
 ```
 
+## 批量下载
+```shell
+wget -i filelist.txt -bc
+```
+
 ## 删除白名单
 
 ```shell

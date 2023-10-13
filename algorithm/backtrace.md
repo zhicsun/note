@@ -100,6 +100,8 @@ func permute(nums []int) [][]int {
 ```go
 package main
 
+import "sort"
+
 func permuteUnique(nums []int) [][]int {
 	// 初始化返回结果和已选择节点集合
 	res := make([][]int, 0)
