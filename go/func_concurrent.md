@@ -13,8 +13,9 @@ import (
 func main() {
 	count := 30
 	queue := make(chan int)
+	gNumber := 3
 	wg := &sync.WaitGroup{}
-	for i := 0; i < 3; i++ {
+	for i := 0; i < gNumber; i++ {
 		exec(wg, i+1, queue)
 	}
 
