@@ -1,26 +1,27 @@
 # 算法
 
-1. [模板](algorithm/template.md)
-2. [双指针](algorithm/double_pointer.md)
-3. [滑动窗口](algorithm/sliding_window.md)
-4. [二分查找](algorithm/binary_search.md)
-5. [递归](algorithm/recursion.md)
-6. [二叉树](algorithm/binary_tree.md)
-7. [回溯](algorithm/backtrace.md)
-8. [深度优先搜索](algorithm/breadth_first_search.md)
-9. [动态规划](algorithm/dynamic_programming.md)
+* [模板](algorithm/template.md)
+* [双指针](algorithm/double_pointer.md)
+* [滑动窗口](algorithm/sliding_window.md)
+* [二分查找](algorithm/binary_search.md)
+* [递归](algorithm/recursion.md)
+* [二叉树](algorithm/binary_tree.md)
+* [回溯](algorithm/backtrace.md)
+* [深度优先搜索](algorithm/breadth_first_search.md)
+* [动态规划](algorithm/dynamic_programming.md)
 
 # go
 
-1. [goroutine 数量控制](go/goroutine_limit.md)
-2. [动态保活工作池](go/work_poll.md)
-3. [常用包](go/package.md)
+* [goroutine 数量控制](go/goroutine_limit.md)
+* [动态保活工作池](go/work_poll.md)
+* [常用包](go/package.md)
+* [方法级并发](go/func_concurrent.md)
 
 # shell
 
-1. [常用命令](shell/common.md)
+* [常用命令](shell/common.md)
 
 # tron
 
-1. [搭建](blockchain/node.md)
-2. [智能合约](blockchain/contract.md)
+* [搭建](blockchain/node.md)
+* [智能合约](blockchain/contract.md)
