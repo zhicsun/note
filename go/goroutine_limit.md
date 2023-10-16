@@ -16,7 +16,7 @@ func main() {
 	var wg sync.WaitGroup
 	goroutineCount := 10
 	goroutineCountBuffer := make(chan struct{}, goroutineCount)
-	count := math.MaxInt64
+	count := math.MaxInt8
 	for i := 0; i < count; i++ {
 		wg.Add(1)
 		goroutineCountBuffer <- struct{}{}
@@ -50,7 +50,7 @@ import (
 func main() {
 	var wg sync.WaitGroup
 	buffer := make(chan int)
-	count := math.MaxInt64
+	count := math.MaxInt8
 	goroutineCount := 10
 
 	for i := 0; i < goroutineCount; i++ {
@@ -70,8 +70,8 @@ func send(wg *sync.WaitGroup, i int, buffer chan<- int) {
 }
 
 func deal(wg *sync.WaitGroup, buffer <-chan int, i int) {
-	defer wg.Done()
 	for v := range buffer {
+		wg.Done()
 		fmt.Println(v, i, runtime.NumGoroutine())
 	}
 }
