@@ -28,25 +28,27 @@ func main() {
 	time.Sleep(1000 * time.Second)
 }
 
-func fn1(id, data int) int {
-	delay := 60
-	time.Sleep(time.Millisecond * time.Duration(delay))
-	fmt.Println(id, data, runtime.NumGoroutine())
-	return delay
-}
+func exec(wg *sync.WaitGroup, id int, queue <-chan int) {
+	go func(id int) {
+		queue3, quit3, result3 := start(wg, id, fn3, nil)
+		queue2, quit2, result2 := start(wg, id, fn2, queue3)
+		queue1, quit1, result1 := start(wg, id, fn1, queue2)
 
-func fn2(id, data int) int {
-	delay := 120
-	time.Sleep(time.Millisecond * time.Duration(delay))
-	fmt.Println(id, data, runtime.NumGoroutine())
-	return delay
-}
-
-func fn3(id, data int) int {
-	delay := 180
-	time.Sleep(time.Millisecond * time.Duration(delay))
-	fmt.Println(id, data, runtime.NumGoroutine())
-	return delay
+		for {
+			select {
+			case v, ok := <-queue:
+				if !ok {
+					close(quit1)
+					close(quit2)
+					close(quit3)
+					total := max(<-result1, <-result2, <-result3)
+					fmt.Println("goroutine", id, "time cost:", total)
+					return
+				}
+				queue1 <- v
+			}
+		}
+	}(id)
 }
 
 func start(wg *sync.WaitGroup, id int, f func(int, int) int, next chan<- int) (chan<- int, chan<- struct{}, <-chan int) {
@@ -70,32 +72,30 @@ func start(wg *sync.WaitGroup, id int, f func(int, int) int, next chan<- int) (c
 				}
 			}
 		}
-
 	}()
+	
 	return queue, quit, result
 }
 
-func exec(wg *sync.WaitGroup, id int, queue <-chan int) {
-	go func(id int) {
-		queue3, quit3, result3 := start(wg, id, fn3, nil)
-		queue2, quit2, result2 := start(wg, id, fn2, queue3)
-		queue1, quit1, result1 := start(wg, id, fn1, queue2)
+func fn1(id, data int) int {
+	delay := 60
+	time.Sleep(time.Millisecond * time.Duration(delay))
+	fmt.Println(id, data, runtime.NumGoroutine())
+	return delay
+}
 
-		for {
-			select {
-			case v, ok := <-queue:
-				if !ok {
-					close(quit1)
-					close(quit2)
-					close(quit3)
-					total := max(<-result1, <-result2, <-result3)
-					fmt.Println("goroutine", id, "time cost:", total)
-					return
-				}
-				queue1 <- v
-			}
-		}
-	}(id)
+func fn2(id, data int) int {
+	delay := 120
+	time.Sleep(time.Millisecond * time.Duration(delay))
+	fmt.Println(id, data, runtime.NumGoroutine())
+	return delay
+}
+
+func fn3(id, data int) int {
+	delay := 180
+	time.Sleep(time.Millisecond * time.Duration(delay))
+	fmt.Println(id, data, runtime.NumGoroutine())
+	return delay
 }
 
 func max(args ...int) int {
