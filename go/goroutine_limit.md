@@ -27,8 +27,8 @@ func main() {
 
 func deal(wg *sync.WaitGroup, buffer <-chan struct{}, i int) {
 	defer func() {
-		wg.Done()
 		<-buffer
+		wg.Done()
 	}()
 	fmt.Println(i, runtime.NumGoroutine())
 }
