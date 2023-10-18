@@ -15,6 +15,7 @@
 * [goroutine 数量控制](go/goroutine_limit.md)
 * [多函数并发](go/func_concurrent.md)
 * [动态保活工作池](go/work_poll.md)
+* [速率限制](go/rate_limit.md)
 * [常用包](go/package.md)
 
 # shell
