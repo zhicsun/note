@@ -135,7 +135,7 @@ func main() {
 			time.Sleep(time.Millisecond * 100)
 			continue
 		}
-		
+
 		process()
 	}
 }

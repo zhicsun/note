@@ -48,6 +48,7 @@ import (
 
 func init() {
 	runtime.SetMutexProfileFraction(1)
+	runtime.SetBlockProfileRate(1)
 }
 
 var data = make([]string, 0)
@@ -112,9 +113,9 @@ url 不带 debug 参数，将会直接下载对应的 profile 文件。
 #### CPU Profiling
 
 ```shell
-go tool pprof http://localhost:8086/debug/pprof/profile\?seconds\=60
+go tool pprof http://localhost:8086/debug/pprof/profile\?seconds\=6
 
-go tool pprof https+insecure://localhost:8086/debug/pprof/profile\?seconds\=60
+go tool pprof https+insecure://localhost:8086/debug/pprof/profile\?seconds\=6
 
 pprof help
 
@@ -133,10 +134,10 @@ top 输出
 #### Heap Profiling
 
 ```shell
-go tool pprof -inuse_space http://localhost:8086/debug/pprof/heap
-go tool pprof -alloc_objects http://localhost:8086/debug/pprof/heap
-go tool pprof -inuse_objects http://localhost:8086/debug/pprof/heap
-go tool pprof -alloc_space http://localhost:8086/debug/pprof/heap
+go tool pprof -inuse_space http://localhost:8086/debug/pprof/heap\?seconds\=6
+go tool pprof -alloc_objects http://localhost:8086/debug/pprof/heap\?seconds\=6
+go tool pprof -inuse_objects http://localhost:8086/debug/pprof/heap\?seconds\=6
+go tool pprof -alloc_space http://localhost:8086/debug/pprof/heap\?seconds\=6
 
 top 10
 ```
@@ -151,7 +152,7 @@ top 输出
 #### Goroutine Profiling
 
 ```shell
-go tool pprof http://localhost:8086/debug/pprof/goroutine
+go tool pprof http://localhost:8086/debug/pprof/goroutine\?seconds\=6
 
 traces
 ```
@@ -164,7 +165,7 @@ traces
 #### Mutex Profiling
 
 ```shell
-go tool pprof http://localhost:8086/debug/pprof/mutex
+go tool pprof http://localhost:8086/debug/pprof/mutex\?seconds\=6
 ```
 
 top 查看互斥量的排名，list 查看指定函数的代码情况。
@@ -172,7 +173,7 @@ top 查看互斥量的排名，list 查看指定函数的代码情况。
 #### Block Profiling
 
 ```shell
-go tool pprof http://localhost:8086/debug/pprof/block
+go tool pprof http://localhost:8086/debug/pprof/block\?seconds\=6
 ```
 
 top 查看互斥量的排名，list 查看指定函数的代码情况。
@@ -182,7 +183,7 @@ top 查看互斥量的排名，list 查看指定函数的代码情况。
 ```shell
 brew install graphviz
 
-wget http://127.0.0.1:8086/debug/pprof/profile
+wget http://127.0.0.1:8086/debug/pprof/profile\?seconds\=6
 
 go tool pprof -http=:8088 profile
 
@@ -231,7 +232,7 @@ func BenchmarkAdd(b *testing.B) {
 
 ```
 
-### CPU 
+### CPU
 
 ```shell
 go test -bench=. -cpuprofile=cpu.profile
@@ -249,4 +250,36 @@ go test -bench=. -memprofile=mem.profile
 go tool pprof mem.profile
 
 web
+```
+
+## goroutine 增多问题排查
+
+### 多次拉取对比
+
+````shell
+go tool pprof http://localhost:8086/debug/pprof/goroutine
+go tool pprof http://localhost:8086/debug/pprof/goroutine
+go tool pprof -base 文件1 文件2
+````
+
+### top 命令
+
+可以查看到引起问题的函数
+
+```shell
+top
+```
+
+### traces 命令
+
+得到具体的调用栈
+
+```shell
+traces
+```
+
+### list 命令
+
+```shell
+list 异常函数
 ```
