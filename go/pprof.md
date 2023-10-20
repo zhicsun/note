@@ -1,38 +1,29 @@
 # pprof
 
-## 有什么用
+## 作用
 
-CPU 分析
-
-内存分析
-
-阻塞分析
-
-互斥锁分析
-
-Goroutine 分析
-
-操作系统线程分析
+- CPU 分析
+- 内存分析
+- 阻塞分析
+- 互斥锁分析
+- Goroutine 分析
+- 操作系统线程分析
 
 ## 采集方式
 
-runtime/pprof：采集程序（非 Server）的指定区块的运行数据进行分析。
-
-net/http/pprof：基于 HTTP Server 运行，并且可以采集运行时数据进行分析。
-
-go test：通过运行测试用例，并指定所需标识来进行采集。
+- runtime/pprof：采集程序（非 Server）的指定区块的运行数据进行分析。
+- net/http/pprof：基于 HTTP Server 运行，并且可以采集运行时数据进行分析。
+- go test：通过运行测试用例，并指定所需标识来进行采集。
 
 ## 使用方式
 
-报告查看。
-
-交互式终端。
-
-Web 界面。
+- 报告查看。
+- 交互式终端。
+- Web 界面。
 
 ## HTTP Server
 
-### 代码
+代码
 
 ```go
 package main
@@ -110,7 +101,7 @@ url 不带 debug 参数，将会直接下载对应的 profile 文件。
 
 ### 终端使用
 
-#### CPU Profiling
+CPU Profiling
 
 ```shell
 go tool pprof http://localhost:8086/debug/pprof/profile\?seconds\=6
@@ -131,7 +122,7 @@ top 输出
 - cum%：函数自身及其调用函数的运行耗时总比例。
 - Name：函数名。
 
-#### Heap Profiling
+Heap Profiling
 
 ```shell
 go tool pprof -inuse_space http://localhost:8086/debug/pprof/heap\?seconds\=6
@@ -149,7 +140,7 @@ top 输出
 - inuse_objects：分析应用程序的每个函数所分配的对象数量。
 - alloc_objects：分析应用程序的内存临时分配情况。
 
-#### Goroutine Profiling
+Goroutine Profiling
 
 ```shell
 go tool pprof http://localhost:8086/debug/pprof/goroutine\?seconds\=6
@@ -162,7 +153,7 @@ traces
 - 打印出对应的所有调用栈。
 - 在 Heap Profiling 展示的是占用内存大小。
 
-#### Mutex Profiling
+Mutex Profiling
 
 ```shell
 go tool pprof http://localhost:8086/debug/pprof/mutex\?seconds\=6
@@ -170,7 +161,7 @@ go tool pprof http://localhost:8086/debug/pprof/mutex\?seconds\=6
 
 top 查看互斥量的排名，list 查看指定函数的代码情况。
 
-#### Block Profiling
+Block Profiling
 
 ```shell
 go tool pprof http://localhost:8086/debug/pprof/block\?seconds\=6
@@ -190,30 +181,30 @@ go tool pprof -http=:8088 profile
 go tool pprof profile 
 ```
 
-#### top
+top
 
 与命令行一致
 
-#### Graph
+Graph
 
 为整体的函数调用流程，框越大、线越粗、框颜色越鲜艳（红色）就代表它占用的时间越久，开销越大。
 
-#### Peek
+Peek
 
 相较于 Top 视图，增加了所属的上下文信息的展示，也就是函数的输出调用者/被调用者。
 
-#### Source
+Source
 
 该视图主要是增加了面向源代码的追踪和分析，可以看到其开销主要消耗在哪里。
 
-#### Flame Graph
+Flame Graph
 
 Flame Graph（火焰图）它是可动态的，调用顺序由上到下（A -> B -> C -> D），每一块代表一个函数、颜色越鲜艳（红）、区块越大代表占用
 CPU 的时间更长。同时它也支持点击块深入进行分析。
 
 ## 测试
 
-### 代码
+代码
 
 ```go
 package main
@@ -232,7 +223,7 @@ func BenchmarkAdd(b *testing.B) {
 
 ```
 
-### CPU
+CPU
 
 ```shell
 go test -bench=. -cpuprofile=cpu.profile
@@ -242,7 +233,7 @@ go tool pprof cpu.profile
 web
 ```
 
-### Memory
+Memory
 
 ```shell
 go test -bench=. -memprofile=mem.profile
@@ -254,7 +245,7 @@ web
 
 ## goroutine 增多问题排查
 
-### 多次拉取对比
+多次拉取对比
 
 ````shell
 go tool pprof http://localhost:8086/debug/pprof/goroutine
@@ -262,23 +253,19 @@ go tool pprof http://localhost:8086/debug/pprof/goroutine
 go tool pprof -base 文件1 文件2
 ````
 
-### top 命令
-
-可以查看到引起问题的函数
+top 看到引起问题的函数
 
 ```shell
 top
 ```
 
-### traces 命令
-
-得到具体的调用栈
+traces 得到具体的调用栈
 
 ```shell
 traces
 ```
 
-### list 命令
+list 查看查看函数详情
 
 ```shell
 list 异常函数
