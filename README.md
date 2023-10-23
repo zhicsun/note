@@ -18,6 +18,7 @@
 * [速率限制](go/rate_limit.md)
 * [pprof](go/pprof.md)
 * [trace](go/trace.md)
+* [选项模式](go/func_options.md)
 * [常用包](go/package.md)
 
 # shell
