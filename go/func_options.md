@@ -6,7 +6,6 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	_ "net/http/pprof"
 	"time"
 )
 
@@ -31,7 +30,7 @@ func NewServer(addr string, port int, options ...func(*Server)) *Server {
 	for _, option := range options {
 		option(&srv)
 	}
-	
+
 	return &srv
 }
 
