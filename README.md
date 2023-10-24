@@ -20,6 +20,7 @@
 * [装饰模式](go/decoration.md)
 * [管道模式](go/pipeline.md)
 * [扇入扇出模式](go/fan_in_out.md)
+* [访问者模式](go/visitor.md)
 * [pprof](go/pprof.md)
 * [trace](go/trace.md)
 * [常用包](go/package.md)
