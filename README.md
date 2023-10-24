@@ -11,13 +11,6 @@
 * [动态规划](algorithm/dynamic_programming.md)
 
 # go
-```mermaid
-mindmap
-root((mindmap))
-    a
-    b
-    c
-```
 
 * [goroutine 数量控制](go/goroutine_limit.md)
 * [多函数并发](go/func_concurrent.md)
@@ -25,7 +18,8 @@ root((mindmap))
 * [速率限制](go/rate_limit.md)
 * [选项模式](go/func_options.md)
 * [装饰模式](go/decoration.md)
-* [pipeline](go/pipeline.md)
+* [管道模式](go/pipeline.md)
+* [扇入扇出模式](go/fan_in_out.md)
 * [pprof](go/pprof.md)
 * [trace](go/trace.md)
 * [常用包](go/package.md)
