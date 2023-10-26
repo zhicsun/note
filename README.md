@@ -10,17 +10,31 @@
 * [深度优先搜索](algorithm/breadth_first_search.md)
 * [动态规划](algorithm/dynamic_programming.md)
 
+# 设计模式
+
+## 结构型模式
+
+* [装饰模式](design_pattern/structural/decoration.md)
+
+## 行为型模式
+
+* [访问者模式](design_pattern/behavioral/visitor.md)
+
+## 其他
+
+* [选项模式](design_pattern/other/func_options.md)
+* [扇入扇出模式](design_pattern/other/fan_in_out.md)
+* [mapReduceFilter](design_pattern/other/map_reduce_filter.md)
+* [管道模式](design_pattern/other/pipeline.md)
+
 # go
 
-* [goroutine 数量控制](go/goroutine_limit.md)
+* [goroutine数量控制](go/goroutine_limit.md)
 * [多函数并发](go/func_concurrent.md)
 * [动态保活工作池](go/work_poll.md)
 * [速率限制](go/rate_limit.md)
-* [选项模式](go/func_options.md)
-* [装饰模式](go/decoration.md)
-* [管道模式](go/pipeline.md)
-* [扇入扇出模式](go/fan_in_out.md)
-* [访问者模式](go/visitor.md)
+
+
 * [pprof](go/pprof.md)
 * [trace](go/trace.md)
 * [常用包](go/package.md)
