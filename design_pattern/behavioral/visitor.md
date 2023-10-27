@@ -7,79 +7,68 @@ package main
 
 import (
 	"fmt"
-	"path"
+	"strings"
 )
 
 func main() {
-	file, err := NewResourceFile("/root/t.pdf")
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	ming := &PhoneFans{name: "小明"}
+	wang := &ComputerFans{name: "小王"}
 
-	err = file.Accept(&Compressor{})
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	shop := Shop{}
+	shop.Register(ming, wang)
+
+	shop.SetProduct("手机")
+	shop.SetProduct("电脑")
 }
 
-type Element interface {
-	Accept(Observer) error
+type Shop struct {
+	Product string
+	Buyers  []Buyer
 }
 
-type Observer interface {
-	Visit(Element) error
-}
-
-func NewResourceFile(filepath string) (Element, error) {
-	switch path.Ext(filepath) {
-	case ".ppt":
-		return &PPTFile{path: filepath}, nil
-	case ".pdf":
-		return &PdfFile{path: filepath}, nil
-	default:
-		return nil, fmt.Errorf("not found file type: %s", filepath)
+func (r *Shop) Register(buyers ...Buyer) {
+	for i := 0; i < len(buyers); i++ {
+		r.Buyers = append(r.Buyers, buyers[i])
 	}
 }
 
-type PdfFile struct {
-	path string
+func (r *Shop) GetProduct() string {
+	return r.Product
 }
 
-func (f *PdfFile) Accept(visitor Observer) error {
-	return visitor.Visit(f)
+func (r *Shop) SetProduct(product string) {
+	r.Product = product
+	r.Notify()
 }
 
-type PPTFile struct {
-	path string
-}
-
-func (f *PPTFile) Accept(visitor Observer) error {
-	return visitor.Visit(f)
-}
-
-type Compressor struct{}
-
-func (c *Compressor) Visit(r Element) error {
-	switch f := r.(type) {
-	case *PPTFile:
-		return c.VisitPPTFile(f)
-	case *PdfFile:
-		return c.VisitPDFFile(f)
-	default:
-		return fmt.Errorf("not found resource typr: %#v", r)
+func (r *Shop) Notify() {
+	for i := 0; i < len(r.Buyers); i++ {
+		r.Buyers[i].Inform(*r)
 	}
 }
 
-func (c *Compressor) VisitPPTFile(f *PPTFile) error {
-	fmt.Println("this is ppt file")
-	return nil
+type Buyer interface {
+	Inform(Shop)
 }
 
-func (c *Compressor) VisitPDFFile(f *PdfFile) error {
-	fmt.Println("this is pdf file")
-	return nil
+type PhoneFans struct {
+	name string
+}
+
+func (r *PhoneFans) Inform(shop Shop) {
+	if strings.Contains(shop.Product, "手机") {
+		fmt.Println(r.name, "购买了", shop.Product)
+	}
+}
+
+type ComputerFans struct {
+	name string
+}
+
+func (r *ComputerFans) Inform(shop Shop) {
+	if strings.Contains(shop.Product, "电脑") {
+		fmt.Println(r.name, "购买了", shop.Product)
+	}
 }
 
 ````
