@@ -18,7 +18,7 @@
 
 ## 行为型模式
 
-* [访问者模式](design_pattern/behavioral/visitor.md)
+* [观察者模式](design_pattern/behavioral/observer.md)
 
 ## 其他
 
