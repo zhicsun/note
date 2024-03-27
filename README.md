@@ -15,8 +15,8 @@
     - [乘法](algorithm/high_precision_mul_test.go)
     - [除法](algorithm/high_precision_div_test.go)
 - 前缀和
-  - [一维](algorithm/prefix_sum_one_dimensional_test.go)
-  - [二维](algorithm/prefix_sum_two_dimensional_test.go)
+    - [一维](algorithm/prefix_sum_one_dimensional_test.go)
+    - [二维](algorithm/prefix_sum_two_dimensional_test.go)
 
 ## 力扣
 
