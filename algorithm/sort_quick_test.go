@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestMergeSort(t *testing.T) {
+func TestSortQuick(t *testing.T) {
 	tests := []struct {
 		name      string
 		arr, want []int
@@ -20,7 +20,7 @@ func TestMergeSort(t *testing.T) {
 
 	for _, v := range tests {
 		t.Run(v.name, func(t *testing.T) {
-			mergeSort(v.arr, 0, len(v.arr)-1)
+			sortQuick(v.arr, 0, len(v.arr)-1)
 			if !reflect.DeepEqual(v.arr, v.want) {
 				t.Fatal("结果: ", v.arr, "期望值: ", v.want)
 			}
@@ -28,38 +28,31 @@ func TestMergeSort(t *testing.T) {
 	}
 }
 
-func mergeSort(s []int, l int, r int) {
+func sortQuick(s []int, l int, r int) {
 	if l >= r {
 		return
 	}
 
-	mid := (l + r) >> 1
-	mergeSort(s, l, mid)
-	mergeSort(s, mid+1, r)
-
-	left, right := l, mid+1
-	var t []int
-	for left <= mid && right <= r {
-		if s[left] <= s[right] {
-			t = append(t, s[left])
+	left, right, x := l-1, r+1, s[(l+r)>>1]
+	for left < right {
+		for {
 			left++
-		} else {
-			t = append(t, s[right])
-			right++
+			if s[left] >= x {
+				break
+			}
+		}
+
+		for {
+			right--
+			if s[right] <= x {
+				break
+			}
+		}
+
+		if left < right {
+			s[left], s[right] = s[right], s[left]
 		}
 	}
-
-	for left <= mid {
-		t = append(t, s[left])
-		left++
-	}
-
-	for right <= r {
-		t = append(t, s[right])
-		right++
-	}
-
-	for left, right = l, 0; left <= r; left, right = left+1, right+1 {
-		s[left] = t[right]
-	}
+	sortQuick(s, l, right)
+	sortQuick(s, right+1, r)
 }

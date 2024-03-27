@@ -1,6 +1,25 @@
 # 算法
 
-* [模板](algorithm/template.md)
+## 模板
+
+- 排序
+    - [快排](algorithm/sort_quick_test.go)
+    - [归并](algorithm/sort_merge_test.go)
+- 二分
+    - [整数最左值](algorithm/binary_search_left_test.go)
+    - [整数最右值](algorithm/binary_search_right_test.go)
+    - [浮点数](algorithm/binary_search_float_test.go)
+- 高精度
+    - [加法](algorithm/high_precision_add_test.go)
+    - [减法](algorithm/high_precision_sub_test.go)
+    - [乘法](algorithm/high_precision_mul_test.go)
+    - [除法](algorithm/high_precision_div_test.go)
+- 前缀和
+  - [一维](algorithm/prefix_sum_one_dimensional_test.go)
+  - [二维](algorithm/prefix_sum_two_dimensional_test.go)
+
+## 力扣
+
 * [双指针](algorithm/double_pointer.md)
 * [滑动窗口](algorithm/sliding_window.md)
 * [二分查找](algorithm/binary_search.md)
