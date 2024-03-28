@@ -10,8 +10,8 @@ func TestPrefixSumTwoDimensional(t *testing.T) {
 		arr                  [][]int
 		x1, y1, x2, y2, want int
 	}{
-		{"一维", [][]int{{1, 7, 2, 4}}, 1, 1, 1, 2, 8},
-		{"多维", [][]int{{1, 7, 2, 4}, {3, 6, 2, 8}, {2, 1, 2, 3}}, 1, 1, 2, 2, 17},
+		{"一维", [][]int{{1, 7, 2, 4}}, 0, 0, 0, 1, 8},
+		{"多维", [][]int{{1, 7, 2, 4}, {3, 6, 2, 8}, {2, 1, 2, 3}}, 0, 0, 1, 1, 17},
 	}
 
 	for _, v := range tests {
@@ -23,7 +23,12 @@ func TestPrefixSumTwoDimensional(t *testing.T) {
 	}
 }
 
-func prefixSumTwoDimensional(s [][]int, xr, xc, yr, yc int) int {
+func prefixSumTwoDimensional(s [][]int, x1, y1, x2, y2 int) int {
+	x1 += 1
+	y1 += 1
+	x2 += 1
+	y2 += 1
+
 	t := make([][]int, len(s))
 	for i := 0; i < len(s); i++ {
 		t[i] = append([]int{0}, s[i]...)
@@ -36,5 +41,5 @@ func prefixSumTwoDimensional(s [][]int, xr, xc, yr, yc int) int {
 		}
 	}
 
-	return sum[yr][yc] - sum[xr-1][yc] - sum[yr][xc-1] + sum[xr-1][xc-1]
+	return sum[x2][y2] - sum[x1-1][y2] - sum[x2][y1-1] + sum[x1-1][y1-1]
 }

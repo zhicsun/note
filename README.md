@@ -17,6 +17,9 @@
 - 前缀和
     - [一维](algorithm/prefix_sum_one_dimensional_test.go)
     - [二维](algorithm/prefix_sum_two_dimensional_test.go)
+- 差分
+    - [一维](algorithm/difference_one_dimensional_test.go)
+    - [二维](algorithm/difference_two_dimensional_test.go)
 
 ## 力扣
 
