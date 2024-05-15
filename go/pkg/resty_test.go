@@ -10,10 +10,10 @@ import (
 )
 
 func TestResty(t *testing.T) {
-	RestyFormData(context.Background())
+	restyFormData(context.Background())
 }
 
-func RestyFormData(ctx context.Context) {
+func restyFormData(ctx context.Context) {
 	path := "http://sms.k8s.sit13.dom/v1/send/sms/verification/code"
 	var res any
 	client := resty.NewWithClient(&http.Client{

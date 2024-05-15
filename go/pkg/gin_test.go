@@ -21,22 +21,22 @@ var (
 )
 
 func TestGin(t *testing.T) {
-	GinStart(ginAppName, ginPort, GinRoute)
+	ginStart(ginAppName, ginPort, ginRoute)
 }
 
-func GinStart(appName, port string, route func(r *gin.Engine)) {
+func ginStart(appName, port string, route func(r *gin.Engine)) {
 	r := gin.New()
 
 	r.Use(otelgin.Middleware(appName))
 	route(r)
 
-	srv := &http.Server{
+	svc := &http.Server{
 		Addr:    port,
 		Handler: r,
 	}
 
 	go func() {
-		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		if err := svc.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			fmt.Println(err.Error())
 		}
 	}()
@@ -48,22 +48,22 @@ func GinStart(appName, port string, route func(r *gin.Engine)) {
 	timeout := time.Second * 10
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
+	if err := svc.Shutdown(ctx); err != nil {
 		fmt.Println(err.Error())
 	}
 
 }
 
-func GinRoute(r *gin.Engine) {
+func ginRoute(r *gin.Engine) {
 	r.GET("/ping", func(c *gin.Context) {
 		ctx := c.Request.Context()
 		fmt.Println(trace.SpanContextFromContext(ctx).TraceID().String())
 		fmt.Println(trace.SpanContextFromContext(ctx).SpanID().String())
 
-		RestyFormData(ctx)
+		restyFormData(ctx)
 		ormFind(ctx)
 		redisGetSet(ctx)
-		GetKafkaSyncSend(ctx, brokers, kafkaConfig, topic)
+		getKafkaSyncSend(ctx, brokers, kafkaConfig, topic)
 
 		c.JSON(200, gin.H{
 			"message": "pong",

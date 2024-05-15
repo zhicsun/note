@@ -14,21 +14,21 @@ import (
 )
 
 func TestOtel(t *testing.T) {
-	err := StartAgent()
+	err := startAgent()
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	defer StopAgent()
-	go GinStart(ginAppName, ginPort, GinRoute)
-	KafkaConsumer(context.Background())
+	defer stopAgent()
+	go ginStart(ginAppName, ginPort, ginRoute)
+	kafkaConsumer(context.Background())
 }
 
 var (
 	tp *sdktrace.TracerProvider
 )
 
-func StartAgent() error {
+func startAgent() error {
 	rpcUrl := "10.252.239.234:4317"
 	serviceName := "lms"
 	env := "dev"
@@ -64,7 +64,7 @@ func StartAgent() error {
 	return nil
 }
 
-func StopAgent() {
+func stopAgent() {
 	err := tp.Shutdown(context.Background())
 	if err != nil {
 		fmt.Println(err.Error())

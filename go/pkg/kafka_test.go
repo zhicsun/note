@@ -30,15 +30,15 @@ var (
 
 func TestKafkaConn(t *testing.T) {
 	ctx := context.Background()
-	GetKafkaSyncSend(ctx, brokers, kafkaConfig, topic)
-	GetKafkaAsyncSend(ctx, brokers, kafkaConfig, topic)
+	getKafkaSyncSend(ctx, brokers, kafkaConfig, topic)
+	getKafkaAsyncSend(ctx, brokers, kafkaConfig, topic)
 }
 
 func TestKafkaConsumer(t *testing.T) {
-	KafkaConsumer(context.Background())
+	kafkaConsumer(context.Background())
 }
 
-func KafkaConsumer(ctx context.Context) {
+func kafkaConsumer(ctx context.Context) {
 	//sarama.Logger = log.New(os.Stdout, "[sarama] ", log.LstdFlags)
 	kafkaConfig.ClientID = clientId
 	kafkaConfig.Version = sarama.DefaultVersion
@@ -162,7 +162,7 @@ func setKafkaConfig() {
 	kafkaConfig.Producer.Return.Successes = true
 }
 
-func GetKafkaSyncSend(ctx context.Context, brokerList []string, config *sarama.Config, topic string) {
+func getKafkaSyncSend(ctx context.Context, brokerList []string, config *sarama.Config, topic string) {
 	setKafkaConfig()
 	config.Producer.RequiredAcks = sarama.WaitForAll
 	producer, err := sarama.NewSyncProducer(brokerList, config)
@@ -188,7 +188,7 @@ func GetKafkaSyncSend(ctx context.Context, brokerList []string, config *sarama.C
 	fmt.Println(producer.Close())
 }
 
-func GetKafkaAsyncSend(ctx context.Context, brokerList []string, config *sarama.Config, topic string) {
+func getKafkaAsyncSend(ctx context.Context, brokerList []string, config *sarama.Config, topic string) {
 	setKafkaConfig()
 	config.Producer.RequiredAcks = sarama.WaitForLocal
 	producer, err := sarama.NewAsyncProducer(brokerList, config)
