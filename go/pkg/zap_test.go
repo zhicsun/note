@@ -37,12 +37,12 @@ func getZapLogger() (*zap.Logger, error) {
 	}
 	encoder := zapcore.NewJSONEncoder(encoderConfig)
 
-	fileName := "./zap.log"
+	path := "./zap.log"
 	format := "-%Y%m%d"
 	maxAge := 7 * 24 * time.Hour
 	rotationTime := 24 * time.Hour
-	rotateLogs, err := rotatelogs.New(fileName+format+".log",
-		rotatelogs.WithLinkName(fileName),
+	rotateLogs, err := rotatelogs.New(path+format+".log",
+		rotatelogs.WithLinkName(path),
 		rotatelogs.WithMaxAge(maxAge),
 		rotatelogs.WithRotationTime(rotationTime),
 	)

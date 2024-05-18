@@ -3,7 +3,9 @@
 ## 准备
 
 ```shell
-# bt https://www.hostcli.com/
+# https://www.bt.cn/bbs/thread-19376-1-1.html
+wget -O install.sh https://download.bt.cn/install/install-ubuntu_6.0.sh && sudo bash install.sh 12f2c1d72
+wget http://download.bt.cn/install/bt-uninstall.sh
 apt-get install vim git openjdk-8-jdk supervisor
 mkdir -p ~/tron
 ```
@@ -13,21 +15,22 @@ mkdir -p ~/tron
 ```shell
 # http://3.219.199.168/
 vim d.txt 
-http://3.219.199.168/backup2024/FullNode_LevelDB_08.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_07.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_06.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_05.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_04.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_03.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_02.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_01.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB_00.tar.gz
-http://3.219.199.168/backup2024/FullNode_LevelDB.md5sum
+http://3.219.199.168/backup20240514/FullNode_LevelDB_08.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_07.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_06.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_05.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_04.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_03.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_02.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_01.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB_00.tar.gz
+http://3.219.199.168/backup20240514/FullNode_LevelDB.md5sum
 wget -i d.txt -bc
 
 vim tar.sh
 #!/bin/bash
 cat FullNode_LevelDB_0* | tar zxv
+
 nohup sh tar.sh 2>&1 &
 ```
 
@@ -92,13 +95,14 @@ kafka/bin/kafka-topics.sh --create --topic solidity --bootstrap-server localhost
 kafka/bin/kafka-topics.sh --create --topic solidityevent --bootstrap-server localhost:9092
 kafka/bin/kafka-topics.sh --create --topic soliditylog --bootstrap-server localhost:9092
 
-kafka/bin/kafka-console-consumer.sh --topic  --from-beginning --bootstrap-server localhost:9092
+kafka/bin/kafka-console-consumer.sh --topic transaction  --from-beginning --bootstrap-server localhost:9092
 ```
 
 ## 节点
 
 ```shell
 wget https://github.com/tronprotocol/java-tron/releases/download/GreatVoyage-v4.7.4/FullNode.jar
+chmod 755 FullNode.jar
 
 vim /etc/supervisor/conf.d/tron.conf
 [program:tron]
@@ -118,4 +122,10 @@ stopasgroup=true
 killasgroup=true
 
 supervisorctl update
+```
+
+## go
+
+```shell
+snap install go --classic
 ```
