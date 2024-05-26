@@ -1,10 +1,5 @@
 app:
   httpPort: 8080
-  name: test
+  name: app
   ip: 127.0.0.1
-
-
-
-
-
 abc: 123
