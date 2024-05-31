@@ -1,5 +1,6 @@
 app:
-  httpPort: 8080
+  httpPort:
+   - 8080
+   - 8081
   name: app
-  ip: 127.0.0.1
-abc: 123
+  ip: 127.0.0.2

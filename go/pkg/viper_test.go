@@ -10,32 +10,71 @@ import (
 	"testing"
 )
 
-func TestViper(t *testing.T) {
-	vp := viper.New()
-	vp.SetConfigName("dev")
-	vp.AddConfigPath("./")
-	vp.SetConfigType("yaml")
-	err := vp.ReadInConfig()
+type App struct {
+	Env      string `yaml:"env"`
+	HTTPPort []int  `yaml:"httpPort"`
+	Name     string `yaml:"name"`
+	IP       string `yaml:"ip"`
+}
+
+func TestViperSave(t *testing.T) {
+	vp, err := GetViper()
 	if err != nil {
-		fmt.Println(err.Error())
+		t.Log(err)
+	}
+
+	vp.Set("app.env", "prod")
+	err = vp.WriteConfigAs("./dev_bak.yaml")
+	if err != nil {
+		t.Log(err)
 		return
 	}
-	fmt.Println(vp.AllSettings())
+}
 
-	type App struct {
-		Env      string `yaml:"env"`
-		HTTPPort int    `yaml:"httpPort"`
-		Name     string `yaml:"name"`
-		IP       string `yaml:"ip"`
+func TestViperGetSet(t *testing.T) {
+	vp, err := GetViper()
+	if err != nil {
+		t.Log(err)
 	}
+
+	vp.SetDefault("app.ip", "192.168.0.1")
+	if vp.IsSet("app.httpPort") {
+		t.Log(vp.GetIntSlice("app.httpPort"))
+	}
+
+	if vp.IsSet("app") {
+		t.Log(vp.GetStringMap("app"))
+	}
+
+	if vp.IsSet("app.ip") {
+		t.Log(vp.GetString("app.ip"))
+	}
+
+	t.Log(vp.AllSettings())
+}
+
+func TestViperUnmarshal(t *testing.T) {
+	vp, err := GetViper()
+	if err != nil {
+		t.Log(err)
+	}
+
 	var app App
 	err = vp.UnmarshalKey("app", &app)
 	if err != nil {
-		fmt.Println(err.Error())
+		t.Log(err)
 		return
 	}
-	fmt.Printf("%+v\n", app)
+	t.Logf("%+v", app)
+}
 
+func TestViperOnchange(t *testing.T) {
+	vp, err := GetViper()
+	if err != nil {
+		t.Log(err)
+	}
+
+	var app App
 	quit := make(chan os.Signal, 1)
 	ch := make(chan struct{})
 	go func() {
@@ -43,7 +82,7 @@ func TestViper(t *testing.T) {
 		vp.OnConfigChange(func(in fsnotify.Event) {
 			err = vp.UnmarshalKey("app", &app)
 			if err != nil {
-				fmt.Println(err.Error())
+				t.Log(err)
 				return
 			}
 			ch <- struct{}{}
@@ -56,10 +95,23 @@ func TestViper(t *testing.T) {
 		case <-quit:
 			goto End
 		case <-ch:
-			fmt.Printf("%+v\n", app)
+			t.Logf("%+v\n", app)
 		}
 	}
 
 End:
 	fmt.Printf("%+v\n", app)
+}
+
+func GetViper() (*viper.Viper, error) {
+	vp := viper.New()
+	vp.SetConfigName("dev")
+	vp.AddConfigPath("./")
+	vp.SetConfigType("yaml")
+	err := vp.ReadInConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	return vp, nil
 }
