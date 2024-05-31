@@ -22,33 +22,41 @@ func TestMetrics(t *testing.T) {
 var (
 	counter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "http_requests_total",
-			Help: "The total number of handled HTTP requests.",
+			Namespace: "dev",
+			Subsystem: "sms",
+			Name:      "http_requests_total",
+			Help:      "The total number of handled HTTP requests.",
 		},
 		[]string{"code", "method"},
 	)
 
 	gauge = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "home_temperature_celsius",
-			Help: "The current temperature in degrees Celsius.",
+			Namespace: "dev",
+			Subsystem: "sms",
+			Name:      "home_temperature_celsius",
+			Help:      "The current temperature in degrees Celsius.",
 		},
 		[]string{"house", "room"},
 	)
 
 	histogram = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "http_request_duration_seconds_histogram",
-			Help:    "A histogram of the HTTP request durations in seconds.",
-			Buckets: []float64{0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10},
+			Namespace: "dev",
+			Subsystem: "sms",
+			Name:      "http_request_duration_seconds_histogram",
+			Help:      "A histogram of the HTTP request durations in seconds.",
+			Buckets:   []float64{0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10},
 		},
 		[]string{"house", "room"},
 	)
 
 	summary = prometheus.NewSummaryVec(
 		prometheus.SummaryOpts{
-			Name: "http_request_duration_seconds_summary",
-			Help: "A summary of the HTTP request durations in seconds.",
+			Namespace: "dev",
+			Subsystem: "sms",
+			Name:      "http_request_duration_seconds_summary",
+			Help:      "A summary of the HTTP request durations in seconds.",
 			Objectives: map[float64]float64{
 				0.5:  0.05,
 				0.9:  0.01,

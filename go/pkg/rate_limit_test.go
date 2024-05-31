@@ -1,4 +1,4 @@
-package paradigm
+package pkg
 
 import (
 	"fmt"
