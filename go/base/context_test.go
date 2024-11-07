@@ -7,27 +7,16 @@ import (
 	"time"
 )
 
-func TestContext(t *testing.T) {
-	ctx := context.Background() // 链路起点或者调用的起点
+func TestBackgroundTodoWithVal(t *testing.T) {
+	ctx := context.Background()
 	ctx = context.WithValue(ctx, "key", "value")
 	val, ok := ctx.Value("key").(string)
-	if !ok {
-		t.Log("类型不对")
-		return
-	}
-	t.Log(val, ctx.Done(), ctx.Err())
-	t.Log(ctx.Deadline())
+	t.Log(val, ok) // value true
 
 	ctx = context.TODO() // 不确定 context 的作用
 	ctx = context.WithValue(ctx, "key", "value")
 	val, ok = ctx.Value("key").(string)
-	if !ok {
-		t.Log("类型不对")
-		return
-	}
-	t.Log(<-ctx.Done())
-	t.Log(ctx.Err())
-	t.Log(ctx.Deadline())
+	t.Log(val, ok) // value true
 }
 
 func TestWithCancel(t *testing.T) {
@@ -39,9 +28,9 @@ func TestWithCancel(t *testing.T) {
 		cancel()
 	}()
 
-	t.Log(<-ctx.Done())
-	t.Log(ctx.Err())
-	t.Log(ctx.Deadline())
+	t.Log(<-ctx.Done())   // {}
+	t.Log(ctx.Err())      // context canceled
+	t.Log(ctx.Deadline()) //  0001-01-01 00:00:00 +0000 UTC false
 }
 
 func TestWithDeadline(t *testing.T) {
@@ -50,7 +39,8 @@ func TestWithDeadline(t *testing.T) {
 	defer cancel()
 
 	deadline, ok := ctx.Deadline()
-	t.Log(deadline, ok)
+	t.Log(deadline, ok) // 2024-06-19 22:48:59.808979 +0800 CST m=+3.000902167 true
+	t.Log(ctx.Err())    // nil
 
 	go func() {
 		if rand.Intn(7) > 3 {
@@ -58,10 +48,9 @@ func TestWithDeadline(t *testing.T) {
 		}
 	}()
 
-	t.Log(<-ctx.Done())
-	t.Log(ctx.Err())
-	t.Log(ctx.Deadline())
-
+	t.Log(<-ctx.Done())   // {}
+	t.Log(ctx.Err())      // context deadline exceeded
+	t.Log(ctx.Deadline()) // 2024-06-19 22:48:59.808979 +0800 CST m=+3.000902167 true
 }
 
 func TestWithTimeOut(t *testing.T) {
@@ -70,7 +59,8 @@ func TestWithTimeOut(t *testing.T) {
 	defer cancel()
 
 	deadline, ok := ctx.Deadline()
-	t.Log(deadline, ok)
+	t.Log(deadline, ok) // 2024-06-19 22:48:59.808979 +0800 CST m=+3.000902167 true
+	t.Log(ctx.Err())    // nil
 
 	go func() {
 		if rand.Intn(7) > 3 {
@@ -78,42 +68,51 @@ func TestWithTimeOut(t *testing.T) {
 		}
 	}()
 
-	t.Log(<-ctx.Done())
-	t.Log(ctx.Err())
-	t.Log(ctx.Deadline())
-}
-
-func TestWithErr(t *testing.T) {
-	t.Log(context.Canceled)
-	t.Log(context.DeadlineExceeded)
+	t.Log(<-ctx.Done())   // {}
+	t.Log(ctx.Err())      // context deadline exceeded
+	t.Log(ctx.Deadline()) // 2024-06-19 22:48:59.808979 +0800 CST m=+3.000902167 true
 }
 
 func TestParentSameKey(t *testing.T) {
 	ctx := context.Background()
-	parent := context.WithValue(ctx, "my-key", "parent value")
-	pVal, ok := parent.Value("my-key").(string)
-	t.Log(pVal, ok)
+	parent := context.WithValue(ctx, "key", "parent")
 
-	child := context.WithValue(parent, "my-key", "child value")
-	cVal, ok := child.Value("my-key").(string)
-	t.Log(cVal, ok)
+	pVal, ok := parent.Value("key").(string)
+	t.Log(pVal, ok) // parent true
 
+	child := context.WithValue(parent, "key", "child")
+	cVal, ok := child.Value("key").(string)
+	t.Log(cVal, ok) // child true
 }
 
-func TestParentTimeoutVal(t *testing.T) {
+func TestChildTimeoutVal(t *testing.T) {
 	ctx := context.Background()
-	parent := context.WithValue(ctx, "my-key", "parent value")
-	child2, cancel := context.WithTimeout(parent, time.Second)
+	parent := context.WithValue(ctx, "key", "parent")
+
+	child, cancel := context.WithTimeout(parent, time.Second)
 	defer cancel()
-	t.Log(child2.Value("my-key"))
+
+	t.Log(<-child.Done())   // {}
+	t.Log(child.Err())      // context deadline exceeded
+	t.Log(child.Deadline()) // 2024-06-19 22:48:59.808979 +0800 CST m=+3.000902167 true
+
+	val, ok := child.Value("key").(string)
+	t.Log(val, ok) // parent true
 }
 
 func TestParentNotGetChildrenVal(t *testing.T) {
 	ctx := context.Background()
-	parent := context.WithValue(ctx, "my-key", "parent value")
-	child := context.WithValue(parent, "new-key", "child value")
-	t.Log(parent.Value("new-key"))
-	t.Log(child.Value("new-key"))
+	parent := context.WithValue(ctx, "key", "parent value")
+	child := context.WithValue(parent, "cKey", "child value")
+
+	pVal, ok := parent.Value("key").(string)
+	t.Log(pVal, ok) // parent value true
+
+	cVal, ok := child.Value("cKey").(string)
+	t.Log(cVal, ok) // child value true
+
+	pVal, ok = parent.Value("cKey").(string)
+	t.Log(pVal, ok) // "" false
 }
 
 func TestParentGetChildrenVal(t *testing.T) {
@@ -122,11 +121,16 @@ func TestParentGetChildrenVal(t *testing.T) {
 	child, cancel := context.WithTimeout(parent, time.Second)
 	defer cancel()
 
-	cm := child.Value("map").(map[string]string)
-	cm["key1"] = "value1"
+	t.Log(<-child.Done())   // {}
+	t.Log(child.Err())      // context deadline exceeded
+	t.Log(child.Deadline()) // 2024-06-19 22:48:59.808979 +0800 CST m=+3.000902167 true
 
-	pm := parent.Value("map").(map[string]string)
-	t.Log(pm["key1"])
+	cMap, ok := child.Value("map").(map[string]string)
+	t.Log(cMap, ok) // map[] true
+	cMap["key"] = "value"
+
+	pMap, ok := parent.Value("map").(map[string]string)
+	t.Log(pMap, ok) // map[key:value] true
 }
 
 func TestChildNotSetParentTimeout(t *testing.T) {
@@ -138,13 +142,13 @@ func TestChildNotSetParentTimeout(t *testing.T) {
 	defer cCancel()
 
 	go func() {
-		t.Log(<-child.Done())
-		t.Log(child.Err())
-		t.Log(child.Deadline())
+		t.Log(<-child.Done())   // {}
+		t.Log(child.Err())      // context deadline exceeded
+		t.Log(child.Deadline()) // 2024-06-19 22:48:59.808979 +0800 CST m=+3.000902167 true
 		t.Log("收到了结束信号")
 	}()
 
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 2) // 父取消子也会取消
 }
 
 func TestChildSetParentTimeout(t *testing.T) {
@@ -155,10 +159,12 @@ func TestChildSetParentTimeout(t *testing.T) {
 	defer cCancel()
 
 	go func() {
-		<-child.Done()
+		t.Log(<-parent.Done())
+		t.Log(<-child.Done())
 		t.Log("收到了结束信号")
 	}()
-	time.Sleep(time.Second * 2)
+
+	time.Sleep(time.Second * 2) // 子取消父不会取消
 }
 
 func TestTimeoutBiz(t *testing.T) {
